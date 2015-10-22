@@ -1,11 +1,12 @@
 var express = require('express');
 var path = require('path');
-//var favicon = require('serve-favicon');
+var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 
+// MongoDB handler - models must be required before routes
+var mongoose = require('mongoose');
 require('./models/Posts');
 require('./models/Comments');
 
@@ -14,13 +15,15 @@ var users = require('./routes/users');
 
 var app = express();
 
-//connect to local database on start
-mongoose.connect('mongodb://localhost/news', function(err, db) {
+var dbname = 'news';
+
+// Connect to local DB on start
+mongoose.connect('mongodb://localhost/' + dbname, function(err, db) {
   if(err){console.log('Failed to connect to DB');}
-  console.log('Connected to /news DB');
+  console.log('Connected to' + dbname + 'DB');
 });
 
-// view engine setup
+// view engine setup - ejs selected
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
