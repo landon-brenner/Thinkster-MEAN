@@ -107,7 +107,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 }]);
 
 // Post/Comment factory - maps UI actions to REST routes
-app.factory('posts', ['$http', 'auth' function($http, auth){
+app.factory('posts', ['$http', 'auth', function($http, auth){
   var o = {
     posts: []
   };
