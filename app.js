@@ -13,11 +13,11 @@ require('./models/Posts');
 require('./models/Comments');
 require('./models/Users');
 
-// Passport must be required after User model
-require('./config/passport');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+// Passport must be required after User model
+require('./config/passport');
 
 var app = express();
 

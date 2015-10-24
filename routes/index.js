@@ -4,7 +4,7 @@ var passport = require('passport');
 var jwt = require('express-jwt');
 
 // Use environment variable for secret, keep it out of code base
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var auth = jwt({secret: process.env['THINKSTER_MEAN'], userProperty: 'payload'});
 
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
