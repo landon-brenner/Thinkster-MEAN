@@ -139,11 +139,20 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
   };
 
 // Upvote post
-  o.upvote = function(post) {
+  o.upvotePost = function(post) {
     return $http.put('/posts/' + post._id + '/upvote', null, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
       post.upvotes += 1;
+    });
+  };
+
+// Downvote a post
+  o.downvotePost = function(post) {
+    return $http.put('/posts/' + post._id + '/downvote', null, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
+      post.upvotes -= 1;
     });
   };
 
@@ -160,6 +169,15 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
       comment.upvotes += 1;
+    });
+  };
+
+  // Downvote a comment
+  o.downvoteComment = function(post, comment) {
+    return $http.put('/posts/' + post._id + '/comments/'+ comment._id + '/downvote', null, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
+      comment.upvotes -= 1;
     });
   };
 
@@ -190,12 +208,18 @@ app.controller('MainCtrl', [
       $scope.link = '';
     };
 
-    $scope.incrementUpvotes = function(post) {
-      posts.upvote(post);
+    $scope.upvotePost = function(post) {
+      posts.upvotePost(post);
+    };
+    $scope.downvotePost = function(post) {
+      if(post.upvotes!=0) {
+        posts.downvotePost(post);
+      };
     };
   }
 ]);
 
+// Post UI controller
 app.controller('PostsCtrl', [
   '$scope',
   'posts',
@@ -218,8 +242,13 @@ app.controller('PostsCtrl', [
       $scope.body = '';
     };
 
-    $scope.incrementUpvotes = function(comment) {
+    $scope.upvoteComment = function(comment) {
       posts.upvoteComment(post, comment);
+    };
+    $scope.downvoteComment = function(comment) {
+      if(comment.upvotes !=0){
+        posts.downvoteComment(post, comment);
+      };
     };
   }
 ]);

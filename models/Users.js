@@ -10,9 +10,9 @@ var UserSchema = new mongoose.Schema({
 
 // Accept password, generate salt and password hash
 UserSchema.methods.setPassword = function(password){
-  console.log('creating password');
+  // console.log('creating password');
   this.salt = crypto.randomBytes(16).toString('hex');
-  console.log(this.salt);
+  // console.log(this.salt);
 
   this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 };
