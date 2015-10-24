@@ -55,6 +55,7 @@ app.config([
   }
 ]);
 
+// Authorization factory - uses $window for local storage
 app.factory('auth', ['$http', '$window', function($http, $window){
   var auth = {};
 
@@ -90,6 +91,8 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   auth.register = function(user){
     return $http.post('/register', user).success(function(data){
       auth.saveToken(data.token);
+    }).error(function(err) {
+      console.log('some error occurred at auth.register')
     });
   };
 

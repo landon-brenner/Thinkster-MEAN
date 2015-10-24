@@ -8,11 +8,11 @@ var UserSchema = new mongoose.Schema({
   salt: String
 });
 
-mongoose.model('User', UserSchema);
-
 // Accept password, generate salt and password hash
 UserSchema.methods.setPassword = function(password){
+  console.log('creating password');
   this.salt = crypto.randomBytes(16).toString('hex');
+  console.log(this.salt);
 
   this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 };
@@ -25,9 +25,9 @@ UserSchema.methods.validPassword = function(password) {
 };
 
 /*
-The second argument of jwt.sign() is the secret used to sign our tokens.
-strongly recommended - use an environment variable for referencing
-the secret and keep it out of your codebase.
+second argument of jwt.sign() is the secret used to sign tokens
+use an environment variable for referencing secret,
+keep it out of codebase.
 */
 
 UserSchema.methods.generateJWT = function() {
@@ -43,3 +43,5 @@ UserSchema.methods.generateJWT = function() {
     exp: parseInt(exp.getTime() / 1000),
   }, process.env['THINKSTER_MEAN']);
 };
+
+mongoose.model('User', UserSchema);
