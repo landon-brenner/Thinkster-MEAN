@@ -5,10 +5,16 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// MongoDB handler - models must be required before routes
 var mongoose = require('mongoose');
+var passport = require('passport');
+
+// MongoDB models must be required before routes
 require('./models/Posts');
 require('./models/Comments');
+require('./models/Users');
+
+// Passport must be required after User model
+require('./config/passport');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -20,7 +26,7 @@ var dbname = 'news';
 // Connect to local DB on start
 mongoose.connect('mongodb://localhost/' + dbname, function(err, db) {
   if(err){console.log('Failed to connect to DB');}
-  console.log('Connected to' + dbname + 'DB');
+  console.log('Connected to ' + dbname + ' DB');
 });
 
 // view engine setup - ejs selected
@@ -34,6 +40,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(passport.initialize());
 
 app.use('/', routes);
 app.use('/users', users);
