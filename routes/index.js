@@ -69,6 +69,11 @@ router.post('/posts', auth, function(req, res, next) {
   });
 });
 
+// Delete a post by ID
+router.delete('posts/:post', auth, function(req,res, next) {
+  
+});
+
 // Create new comment
 router.post('/posts/:post/comments', auth, function(req, res, next) {
   var comment = new Comment(req.body);
